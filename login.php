@@ -1,6 +1,6 @@
 <?php
-require_once'./connect.php';
-$sql = 'SELECT * FROM signup';
+require_once './connect.php';
+// $sql = 'SELECT * FROM signup';
 
 // $getData = $conn->query($sql);
 
@@ -48,33 +48,19 @@ $sql = 'SELECT * FROM signup';
             backdrop-filter: blur(30px);
             ">
           <div class="card-body p-5 shadow-5 text-center">
-            <h2 class="fw-bold mb-5">Sign up now</h2>
-            <form>
+            <h2 class="fw-bold mb-5">Sign in now</h2>
+            <form action = './login.php' method = 'post'>
               <!-- 2 column grid layout with text inputs for the first and last names -->
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <div class="form-outline">
-                    <input type="text" id="form3Example1" class="form-control" />
-                    <label class="form-label" for="form3Example1">First name</label>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="form-outline">
-                    <input type="text" id="form3Example2" class="form-control" />
-                    <label class="form-label" for="form3Example2">Last name</label>
-                  </div>
-                </div>
-              </div>
-
+             
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="email" id="form3Example3" class="form-control" />
+                <input type="email" id="form3Example3" class="form-control" name = "email"/>
                 <label class="form-label" for="form3Example3">Email address</label>
               </div>
 
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="form3Example4" class="form-control" />
+                <input type="password" id="form3Example4" class="form-control" name="password" />
                 <label class="form-label" for="form3Example4">Password</label>
               </div>
 
@@ -87,8 +73,8 @@ $sql = 'SELECT * FROM signup';
               </div>
 
               <!-- Submit button -->
-              <button type="submit" class="btn btn-primary btn-block mb-4">
-                Sign up
+              <button type="submit" class="btn btn-primary btn-block mb-4" name = "submit">
+                Sign in
               </button>
 
               <!-- Register buttons -->
@@ -126,3 +112,27 @@ $sql = 'SELECT * FROM signup';
 <!-- Section: Design Block -->
 </body>
 </html>
+
+<?php
+
+if(isset($_POST['submit'])){
+
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $sql = $db-> query("SELECT * FROM users WHERE email = '$email' AND `password` = '$password' ");
+  
+  $result = $sql->fetch();
+  // print_r($result);
+  if($result!=null){
+if($result['role']=='admin'){
+  header("location:admin.php");
+
+}else{
+  header("location:landing.php?em=$email");
+
+}
+  }
+  // print_r($sql->fetch());
+}
+
+?>
